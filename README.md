@@ -1,5 +1,3 @@
-@'
-
 \# Private Communication Protocol (PCP)
 
 
@@ -8,19 +6,23 @@
 
 
 
-Private Communication Protocol (PCP) is an open-source initiative developing reusable communication security and privacy-preserving transport infrastructure for applications.
+Private Communication Protocol (PCP) is an independent, open-source communication protocol and software foundation focused on secure communication, cryptographic privacy, and privacy-preserving network transport.
 
 
 
-PCP aims to provide developers with a modular foundation for end-to-end encryption, cryptographic identity, metadata protection, and privacy-preserving network transport.
+PCP aims to provide reusable communication infrastructure that developers can integrate into their own applications and independently deploy.
 
 
 
-🌐 \*\*Website:\*\* https://private-communication-protocol.github.io/
+It is designed to support end-to-end encryption, secure device communication, metadata minimization, and modular transport implementations without requiring applications to depend on a centralized PCP service.
 
 
 
-🐙 \*\*GitHub Organization:\*\* https://github.com/Private-Communication-Protocol
+\*\*Website:\*\* https://private-communication-protocol.github.io/
+
+
+
+\*\*GitHub Organization:\*\* https://github.com/Private-Communication-Protocol
 
 
 
@@ -28,87 +30,29 @@ PCP aims to provide developers with a modular foundation for end-to-end encrypti
 
 
 
-\## About PCP
+\## Project Vision
 
 
 
-Communication security should be reusable infrastructure, not an application-specific feature.
+Build an open-source foundation that enables developers to create secure and privacy-preserving communication applications without depending on a single centralized communication provider.
 
 
 
-PCP aims to separate communication security and transport from application-specific development, allowing developers to integrate reusable protocol components without independently implementing every security and networking mechanism.
+PCP is intended to be:
 
 
 
-Applications using PCP retain control over their own:
+\- \*\*Independent:\*\* Applications and operators control their own deployments.
 
+\- \*\*Open Source:\*\* Protocol specifications and implementations are publicly reviewable.
 
+\- \*\*Secure:\*\* Communication relies on established cryptographic protocols.
 
-\- User accounts and authentication
+\- \*\*Privacy Focused:\*\* Metadata exposure is minimized wherever technically practical.
 
-\- Databases and data storage
+\- \*\*Modular:\*\* Cryptography, transport, and delivery infrastructure remain separate components.
 
-\- Contacts and user profiles
-
-\- Online presence and last-seen systems
-
-\- Application interfaces and business logic
-
-\- Infrastructure and deployment
-
-
-
-PCP focuses on the communication security and transport layer.
-
-
-
-\## Core Objectives
-
-
-
-\- \*\*End-to-End Encryption:\*\* Protect message confidentiality and integrity.
-
-\- \*\*Cryptographic Identity:\*\* Establish and verify device identities.
-
-\- \*\*Metadata Protection:\*\* Minimize unnecessary communication metadata exposure.
-
-\- \*\*Privacy-Preserving Transport:\*\* Support Tor, onion routing, and extensible transport mechanisms.
-
-\- \*\*Modularity:\*\* Allow individual components to evolve independently.
-
-\- \*\*Interoperability:\*\* Enable compatible implementations across different applications.
-
-\- \*\*Independent Deployment:\*\* Allow developers to operate PCP components within their own infrastructure.
-
-
-
-\## Project Architecture
-
-
-
-PCP is being designed around independent components:
-
-
-
-| Component | Responsibility |
-
-|---|---|
-
-| Cryptographic Core | Encryption, authentication and key management |
-
-| Identity Layer | Cryptographic identity and device verification |
-
-| Metadata Layer | Metadata minimization and protection |
-
-| Transport Layer | Privacy-preserving communication paths |
-
-| Relay Layer | Message forwarding and temporary delivery |
-
-| SDK | Application integration |
-
-
-
-These components are under development and their architecture will evolve through documented specifications and community contributions.
+\- \*\*Extensible:\*\* Developers can contribute alternative transports, SDKs, and infrastructure implementations.
 
 
 
@@ -116,21 +60,77 @@ These components are under development and their architecture will evolve throug
 
 
 
+The following documents describe PCP's vision, architecture, security model, and development direction.
+
+
+
 | Document | Description |
 
 |---|---|
 
-| \[Introduction to PCP](docs/introduction.md) | Project purpose, philosophy and objectives |
+| \[Introduction](docs/introduction.md) | What PCP is, why it exists, and its core objectives. |
 
-| How PCP Works | Planned |
+| \[How PCP Works](docs/how-it-works.md) | Communication lifecycle and high-level protocol operation. |
 
-| System Architecture | Planned |
+| \[System Architecture](docs/system-architecture.md) | Architectural components, layers, and interactions. |
 
-| Security Model | Planned |
+| \[Responsibility Boundaries](docs/responsibility-boundaries.md) | Responsibilities of applications, SDKs, relays, and infrastructure operators. |
 
-| Development Roadmap | Planned |
+| \[Security Model](docs/security-model.md) | Threat actors, protected assets, trust assumptions, and security limitations. |
 
-| Contributing Guidelines | Planned |
+| \[Development Roadmap](docs/roadmap.md) | Development phases, milestones, and initial release goals. |
+
+
+
+\## Architectural Direction
+
+
+
+The initial development direction includes:
+
+
+
+\- \*\*Core:\*\* Rust
+
+\- \*\*Cryptographic foundation:\*\* Established protocols through reviewed implementations, initially targeting Signal Protocol via libsignal.
+
+\- \*\*Initial SDK integration:\*\* Flutter
+
+\- \*\*Transport:\*\* Modular transport architecture, initially targeting Tor/Arti integration.
+
+\- \*\*Delivery:\*\* Independently deployable relay and mailbox components.
+
+\- \*\*Deployment:\*\* Application-owned or independently operated infrastructure.
+
+
+
+These describe the intended development direction. They do not imply that every component is already implemented.
+
+
+
+\## What PCP Is Not
+
+
+
+PCP is not:
+
+
+
+\- A centralized messaging service.
+
+\- A hosted user-account platform.
+
+\- A global contact or user directory.
+
+\- An application-specific backend.
+
+\- A mandatory cloud infrastructure provider.
+
+\- A blockchain or token-based ecosystem.
+
+
+
+Applications retain control over their accounts, contacts, databases, user interfaces, business logic, and deployment policies.
 
 
 
@@ -138,61 +138,51 @@ These components are under development and their architecture will evolve throug
 
 
 
-PCP is in its initial design and development stage.
+<text\_placeholder> </text\_placeholder>
+
+PCP is currently in its foundational documentation and architecture stage.
 
 
 
-The initial development focuses on establishing a functional protocol foundation, cryptographic integration, secure message envelopes, metadata minimization and Tor-based transport.
+Implementation milestones, release status, and supported capabilities will be updated as development progresses.
 
 
 
-Future capabilities may include alternative transport implementations, advanced metadata protection, performance improvements and additional language bindings.
+The initial target is a functional, independently deployable foundation rather than a fully decentralized ecosystem.
 
 
 
-Experimental implementations must not be interpreted as independently audited production security guarantees.
+\## Community and Contributions
 
 
 
-\## Open Source Philosophy
+PCP is intended to be developed through open collaboration.
 
 
 
-PCP is developed with transparency, independent verification and community participation in mind.
+Contributions may include:
 
 
 
-The project aims to make its specifications, implementation decisions and source code publicly accessible.
+\- Protocol implementation
 
+\- Cryptographic security improvements
 
+\- Alternative transport integrations
 
-We welcome contributions involving:
+\- Relay and mailbox implementations
 
-
-
-\- Cryptographic engineering
-
-\- Network and transport development
-
-\- Security research and auditing
+\- SDK development
 
 \- Performance optimization
 
-\- SDK development
+\- Security research
 
 \- Documentation and testing
 
 
 
-\## Contributing
-
-
-
-Community contributions are welcome.
-
-
-
-As the project develops, contribution guidelines, protocol specifications and security reporting procedures will be published in this repository and the PCP core repository.
+Contribution guidelines and repository-specific instructions will be published as development progresses.
 
 
 
@@ -200,11 +190,19 @@ As the project develops, contribution guidelines, protocol specifications and se
 
 
 
-Security vulnerabilities should be reported responsibly rather than publicly disclosed before maintainers have an opportunity to investigate them.
+Security is a core design requirement.
 
 
 
-A dedicated security reporting policy will be published as the project matures.
+PCP intends to use established cryptographic protocols, minimize unnecessary metadata exposure, and make its implementations independently reviewable.
+
+
+
+Security claims must be supported by documented guarantees, reproducible tests, and independent review.
+
+
+
+For vulnerability reports, follow the security disclosure instructions published by the project.
 
 
 
@@ -212,11 +210,7 @@ A dedicated security reporting policy will be published as the project matures.
 
 
 
-The website documentation and assets are intended to be open source. Licensing details will be maintained in the relevant repository.
-
-
-
-The PCP protocol implementation may have its own licensing and contribution terms.
+The licensing model will be published once finalized.
 
 
 
@@ -224,15 +218,9 @@ The PCP protocol implementation may have its own licensing and contribution term
 
 
 
-\*\*Private Communication Protocol (PCP)\*\*
+\*\*Private Communication Protocol\*\*
 
 
 
 \*Independent. Open Source. Privacy First.\*
-
-
-
-Website: https://private-communication-protocol.github.io/
-
-'@ | Set-Content -Encoding UTF8 README.md
 
