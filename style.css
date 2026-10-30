@@ -99,6 +99,40 @@ footer {
     letter-spacing: 1px;
 }
 
+/* =================================
+   DOCUMENTATION PAGE OVERRIDES
+================================= */
+
+body.docs-page {
+    display: block;
+    min-height: 100vh;
+    padding: 0;
+    background: #080b12;
+    color: #f1f5f9;
+    font-family: Inter, "Segoe UI", sans-serif;
+}
+
+/* Prevent landing-page styles from affecting documentation */
+
+.docs-page h1 {
+    letter-spacing: normal;
+    line-height: 1.35;
+    margin-bottom: 30px;
+}
+
+/* Documentation links */
+
+.docs-page a {
+    transition: color 0.2s ease, background 0.2s ease;
+}
+
+/* Consistent selection color */
+
+.docs-page ::selection {
+    background: rgba(56, 189, 248, 0.3);
+    color: #ffffff;
+}
+
 @media (max-width: 600px) {
     footer {
         justify-content: center;
