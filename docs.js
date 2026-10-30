@@ -30,10 +30,12 @@ const content = document.getElementById("markdown-content");
 const loading = document.getElementById("loading");
 const error = document.getElementById("error");
 
+let currentRequest = 0;
+
 async function loadDocument() {
+    const requestId = ++currentRequest;
 
     const params = new URLSearchParams(window.location.search);
-
     const requestedPage = params.get("page") || "introduction";
 
     const documentData = documents[requestedPage];
@@ -47,37 +49,57 @@ async function loadDocument() {
 
     if (!documentData) {
         loading.hidden = true;
+        content.hidden = true;
         error.hidden = false;
         error.textContent = "Document not found.";
         return;
     }
 
+    loading.hidden = false;
+    content.hidden = true;
+    error.hidden = true;
+
     try {
-        const response = await fetch(documentData.file);
+        const response = await fetch(documentData.file, {
+            cache: "no-cache"
+        });
 
         if (!response.ok) {
-            throw new Error("Document request failed");
+            throw new Error(
+                `Failed to load ${documentData.file}: HTTP ${response.status}`
+            );
         }
 
         const markdown = await response.text();
 
+        // Render Markdown into HTML
         const renderedHTML = marked.parse(markdown);
 
-        content.innerHTML = DOMPurify.sanitize(renderedHTML);
+        // Sanitize generated HTML
+        const safeHTML = DOMPurify.sanitize(renderedHTML);
 
-        document.title = `${documentData.title} | PCP Documentation`;
+        // Ignore outdated requests
+        if (requestId !== currentRequest) return;
+
+        content.innerHTML = safeHTML;
+
+        document.title =
+            `${documentData.title} | PCP Documentation`;
 
         loading.hidden = true;
         content.hidden = false;
 
     } catch (err) {
+        if (requestId !== currentRequest) return;
+
+        console.error("PCP documentation error:", err);
+
         loading.hidden = true;
         content.hidden = true;
         error.hidden = false;
-        error.textContent =
-            "Unable to load documentation. Please try again later.";
 
-        console.error("PCP documentation error:", err);
+        error.textContent =
+            "Unable to load documentation. Check the browser console.";
     }
 }
 
