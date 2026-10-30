@@ -1,34 +1,18 @@
-\# Development Roadmap
+# Development Roadmap
 
-
-
-\## 1. Purpose
-
-
+## 1. Purpose
 
 This document defines the development direction, implementation phases, milestones, and release strategy for the Private Communication Protocol (PCP).
 
-
-
 The roadmap establishes a practical path from the initial protocol foundation to a reusable, independently deployable communication toolkit.
-
-
 
 PCP development will prioritize working implementations, security, modularity, interoperability, and community contributions.
 
-
-
 The project will avoid introducing unnecessary complexity before the foundational protocol is functional.
 
-
-
-\## 2. Development Philosophy
-
-
+## 2. Development Philosophy
 
 PCP will follow these principles throughout development:
-
-
 
 1\. Build a functional foundation before expanding the ecosystem.
 
@@ -50,15 +34,9 @@ PCP will follow these principles throughout development:
 
 10\. Avoid unnecessary infrastructure dependencies and centralized services.
 
-
-
-\## 3. Development Strategy
-
-
+## 3. Development Strategy
 
 PCP development is divided into six major phases.
-
-
 
 | Phase | Focus | Expected outcome |
 
@@ -78,701 +56,505 @@ PCP development is divided into six major phases.
 
 | Phase 6 | Security, interoperability and release | Tested, reviewed and documented v0.1 release |
 
-
-
 These phases describe development priorities, not claims that the corresponding capabilities already exist.
 
+## 4. Phase 0: Project Foundation
 
-
-\## 4. Phase 0: Project Foundation
-
-
-
-\### Objective
-
-
+### Objective
 
 Establish the independent PCP project and its engineering foundations.
 
+### Deliverables
 
+- Dedicated GitHub organization
 
-\### Deliverables
+- Official project website
 
+- Project introduction
 
+- How PCP works documentation
 
-\- Dedicated GitHub organization
+- System architecture documentation
 
-\- Official project website
+- Responsibility boundaries documentation
 
-\- Project introduction
+- Security model documentation
 
-\- How PCP works documentation
+- Development roadmap
 
-\- System architecture documentation
+- Repository organization
 
-\- Responsibility boundaries documentation
+- Contribution guidelines
 
-\- Security model documentation
+- License selection
 
-\- Development roadmap
+- Issue and pull-request templates
 
-\- Repository organization
+### Completion Criteria
 
-\- Contribution guidelines
+- Core project documentation is published.
 
-\- License selection
+- Repository responsibilities are clearly defined.
 
-\- Issue and pull-request templates
+- Development conventions are established.
 
+- Licensing is explicitly selected.
 
+- Contributors can understand the project's purpose and architecture.
 
-\### Completion Criteria
+## 5. Phase 1: Core Protocol Foundation
 
-
-
-\- Core project documentation is published.
-
-\- Repository responsibilities are clearly defined.
-
-\- Development conventions are established.
-
-\- Licensing is explicitly selected.
-
-\- Contributors can understand the project's purpose and architecture.
-
-
-
-\## 5. Phase 1: Core Protocol Foundation
-
-
-
-\### Objective
-
-
+### Objective
 
 Create the foundational protocol structures independently of any specific application or transport.
 
+### Deliverables
 
+- Protocol message definitions
 
-\### Deliverables
+- Message envelope specification
 
+- Protocol versioning
 
+- Serialization format
 
-\- Protocol message definitions
+- Message identifiers
 
-\- Message envelope specification
+- Routing metadata definitions
 
-\- Protocol versioning
+- Protocol validation rules
 
-\- Serialization format
+- Error definitions
 
-\- Message identifiers
+- Size and input limits
 
-\- Routing metadata definitions
+- Basic protocol test suite
 
-\- Protocol validation rules
-
-\- Error definitions
-
-\- Size and input limits
-
-\- Basic protocol test suite
-
-
-
-\### Engineering Priorities
-
-
+### Engineering Priorities
 
 The initial protocol must define how protected messages are represented, validated, and passed between components.
 
-
-
 The protocol should avoid embedding application-specific concepts such as usernames, contact lists, groups, or user profiles.
 
+### Completion Criteria
 
+- Message envelopes can be created and parsed.
 
-\### Completion Criteria
+- Invalid messages are rejected.
 
+- Protocol versions are identifiable.
 
+- Serialization behavior is documented.
 
-\- Message envelopes can be created and parsed.
+- Core structures have automated tests.
 
-\- Invalid messages are rejected.
+- At least two independent components can exchange compatible protocol structures.
 
-\- Protocol versions are identifiable.
+## 6. Phase 2: Cryptographic Foundation
 
-\- Serialization behavior is documented.
-
-\- Core structures have automated tests.
-
-\- At least two independent components can exchange compatible protocol structures.
-
-
-
-\## 6. Phase 2: Cryptographic Foundation
-
-
-
-\### Objective
-
-
+### Objective
 
 Implement the cryptographic functionality required for secure endpoint-to-endpoint communication.
 
+### Deliverables
 
+- Cryptographic identity management
 
-\### Deliverables
+- Device key management
 
+- Session establishment
 
+- Authenticated message encryption
 
-\- Cryptographic identity management
+- Message decryption and validation
 
-\- Device key management
+- Ratcheting and session-state management
 
-\- Session establishment
+- Pre-key management
 
-\- Authenticated message encryption
+- Replay protection
 
-\- Message decryption and validation
+- Key rotation and lifecycle handling
 
-\- Ratcheting and session-state management
+- Persistent cryptographic storage interfaces
 
-\- Pre-key management
+- Cryptographic test suite
 
-\- Replay protection
-
-\- Key rotation and lifecycle handling
-
-\- Persistent cryptographic storage interfaces
-
-\- Cryptographic test suite
-
-
-
-\### Engineering Direction
-
-
+### Engineering Direction
 
 The initial implementation will use established cryptographic protocols and reviewed libraries.
 
-
-
 The Signal Protocol through the official libsignal implementation is the initial direction for session establishment and ratcheted end-to-end encryption.
-
-
 
 PCP must not create a custom cryptographic protocol merely to achieve implementation independence.
 
+### Completion Criteria
 
+- Two independent endpoints can establish authenticated sessions.
 
-\### Completion Criteria
+- Messages can be encrypted and decrypted.
 
+- Modified or unauthenticated messages are rejected.
 
+- Out-of-order message handling is tested.
 
-\- Two independent endpoints can establish authenticated sessions.
+- Replay handling is tested.
 
-\- Messages can be encrypted and decrypted.
+- Session state survives supported application restarts.
 
-\- Modified or unauthenticated messages are rejected.
+- Key lifecycle behavior is documented.
 
-\- Out-of-order message handling is tested.
+- Cryptographic tests are reproducible.
 
-\- Replay handling is tested.
+## 7. Phase 3: Transport Foundation
 
-\- Session state survives supported application restarts.
-
-\- Key lifecycle behavior is documented.
-
-\- Cryptographic tests are reproducible.
-
-
-
-\## 7. Phase 3: Transport Foundation
-
-
-
-\### Objective
-
-
+### Objective
 
 Build a modular transport system that allows PCP to operate across different network environments.
 
+### Deliverables
 
+- Transport interface
 
-\### Deliverables
+- Connection lifecycle management
 
+- Transport configuration
 
+- Connection error handling
 
-\- Transport interface
+- Retry behavior
 
-\- Connection lifecycle management
+- Transport-independent message delivery interface
 
-\- Transport configuration
+- Initial Tor/Arti integration
 
-\- Connection error handling
+- DNS leak testing
 
-\- Retry behavior
+- Transport test suite
 
-\- Transport-independent message delivery interface
-
-\- Initial Tor/Arti integration
-
-\- DNS leak testing
-
-\- Transport test suite
-
-
-
-\### Engineering Direction
-
-
+### Engineering Direction
 
 Tor/Arti will be the initial privacy-preserving transport integration.
 
-
-
 The core protocol must not depend permanently on Tor.
-
-
 
 Future implementations may introduce alternative transports depending on their security, privacy, latency, and deployment characteristics.
 
+### Completion Criteria
 
+- PCP can transmit protected envelopes through a transport implementation.
 
-\### Completion Criteria
+- Transport failures do not corrupt cryptographic session state.
 
+- Network connection handling is tested.
 
+- DNS behavior is validated for supported proxy configurations.
 
-\- PCP can transmit protected envelopes through a transport implementation.
+- Transport implementations can be replaced without rewriting the cryptographic layer.
 
-\- Transport failures do not corrupt cryptographic session state.
+## 8. Phase 4: Relay and Delivery Infrastructure
 
-\- Network connection handling is tested.
-
-\- DNS behavior is validated for supported proxy configurations.
-
-\- Transport implementations can be replaced without rewriting the cryptographic layer.
-
-
-
-\## 8. Phase 4: Relay and Delivery Infrastructure
-
-
-
-\### Objective
-
-
+### Objective
 
 Provide infrastructure-independent delivery mechanisms for endpoints that cannot communicate directly.
 
+### Deliverables
 
+- Relay reference implementation
 
-\### Deliverables
+- Mailbox reference implementation
 
+- Protected envelope forwarding
 
+- Offline message storage
 
-\- Relay reference implementation
+- Delivery acknowledgements
 
-\- Mailbox reference implementation
+- Expiry policies
 
-\- Protected envelope forwarding
+- Message retrieval
 
-\- Offline message storage
+- Duplicate handling
 
-\- Delivery acknowledgements
+- Delivery retry mechanisms
 
-\- Expiry policies
+- Relay API specification
 
-\- Message retrieval
+- Relay security tests
 
-\- Duplicate handling
-
-\- Delivery retry mechanisms
-
-\- Relay API specification
-
-\- Relay security tests
-
-
-
-\### Engineering Direction
-
-
+### Engineering Direction
 
 Relay and mailbox infrastructure will be independently deployable.
 
-
-
 Applications and infrastructure operators should be able to host their own delivery components.
-
-
 
 Relay and mailbox components must not require endpoint decryption keys.
 
-
-
 Temporary ciphertext storage must have clearly documented retention and deletion behavior.
 
+### Completion Criteria
 
+- Endpoints can exchange protected envelopes through a relay.
 
-\### Completion Criteria
+- Offline recipients can retrieve pending messages.
 
+- Delivery acknowledgements work correctly.
 
+- Duplicate and expired messages are handled.
 
-\- Endpoints can exchange protected envelopes through a relay.
+- Relay operators cannot decrypt protected message content.
 
-\- Offline recipients can retrieve pending messages.
+- Relay and mailbox deployment instructions are available.
 
-\- Delivery acknowledgements work correctly.
+## 9. Phase 5: SDK and Reference Integration
 
-\- Duplicate and expired messages are handled.
-
-\- Relay operators cannot decrypt protected message content.
-
-\- Relay and mailbox deployment instructions are available.
-
-
-
-\## 9. Phase 5: SDK and Reference Integration
-
-
-
-\### Objective
-
-
+### Objective
 
 Make PCP usable by application developers through a documented SDK and working reference integration.
 
+### Deliverables
 
+- Rust core library
 
-\### Deliverables
+- Public SDK interfaces
 
+- Initial Flutter integration
 
+- Device identity APIs
 
-\- Rust core library
+- Session management APIs
 
-\- Public SDK interfaces
+- Encrypt/decrypt APIs
 
-\- Initial Flutter integration
+- Transport configuration APIs
 
-\- Device identity APIs
+- Error handling documentation
 
-\- Session management APIs
+- Reference application integration
 
-\- Encrypt/decrypt APIs
+- Developer examples
 
-\- Transport configuration APIs
+- Integration tests
 
-\- Error handling documentation
-
-\- Reference application integration
-
-\- Developer examples
-
-\- Integration tests
-
-
-
-\### Engineering Direction
-
-
+### Engineering Direction
 
 Rust will serve as the initial core implementation language.
 
-
-
 Flutter will be the first supported application integration.
-
-
 
 The SDK should expose stable, documented interfaces without requiring application developers to manage low-level cryptographic details themselves.
 
-
-
 Future language bindings may include:
 
+- Kotlin
 
+- Swift
 
-\- Kotlin
+- JavaScript or TypeScript
 
-\- Swift
-
-\- JavaScript or TypeScript
-
-\- Python
-
-
+- Python
 
 These bindings should be introduced only when the core APIs and protocol interfaces are sufficiently stable.
 
+### Completion Criteria
 
+- A developer can integrate PCP into a reference application.
 
-\### Completion Criteria
+- The application can establish a secure session.
 
+- The application can send and receive encrypted messages.
 
+- Transport configuration is accessible through documented APIs.
 
-\- A developer can integrate PCP into a reference application.
+- Application-specific business logic remains outside PCP.
 
-\- The application can establish a secure session.
+- Developer documentation includes a working integration example.
 
-\- The application can send and receive encrypted messages.
+## 10. Phase 6: Security, Interoperability and Release
 
-\- Transport configuration is accessible through documented APIs.
-
-\- Application-specific business logic remains outside PCP.
-
-\- Developer documentation includes a working integration example.
-
-
-
-\## 10. Phase 6: Security, Interoperability and Release
-
-
-
-\### Objective
-
-
+### Objective
 
 Prepare PCP for its first public functional release.
 
+### Deliverables
 
+- Full protocol test suite
 
-\### Deliverables
+- Cross-component integration tests
 
+- Interoperability tests
 
+- Fuzz testing for protocol parsers
 
-\- Full protocol test suite
+- Dependency auditing
 
-\- Cross-component integration tests
+- Security review
 
-\- Interoperability tests
+- Threat-model verification
 
-\- Fuzz testing for protocol parsers
+- Performance benchmarks
 
-\- Dependency auditing
+- Installation and deployment guides
 
-\- Security review
+- API documentation
 
-\- Threat-model verification
+- Release notes
 
-\- Performance benchmarks
+- Known limitations
 
-\- Installation and deployment guides
+- Version compatibility policy
 
-\- API documentation
+### Completion Criteria
 
-\- Release notes
+- Core protocol tests pass.
 
-\- Known limitations
+- Cryptographic integration tests pass.
 
-\- Version compatibility policy
+- Transport and delivery integration tests pass.
 
+- Supported components interoperate.
 
+- Known security limitations are documented.
 
-\### Completion Criteria
+- Installation instructions are reproducible.
 
+- No unresolved critical security issue is knowingly shipped.
 
+- Release artifacts and source code are publicly available.
 
-\- Core protocol tests pass.
+## 11. Initial Release: PCP v0.1
 
-\- Cryptographic integration tests pass.
-
-\- Transport and delivery integration tests pass.
-
-\- Supported components interoperate.
-
-\- Known security limitations are documented.
-
-\- Installation instructions are reproducible.
-
-\- No unresolved critical security issue is knowingly shipped.
-
-\- Release artifacts and source code are publicly available.
-
-
-
-\## 11. Initial Release: PCP v0.1
-
-
-
-\### Objective
-
-
+### Objective
 
 Deliver a small but functional implementation that demonstrates the core PCP architecture.
 
+### Expected v0.1 Capabilities
 
+- Basic protocol message envelopes
 
-\### Expected v0.1 Capabilities
+- Protocol validation and versioning
 
+- Cryptographic identity and session management
 
+- End-to-end encrypted communication
 
-\- Basic protocol message envelopes
+- Authenticated message handling
 
-\- Protocol validation and versioning
+- Modular transport interface
 
-\- Cryptographic identity and session management
+- Initial Tor/Arti transport integration
 
-\- End-to-end encrypted communication
+- Basic relay forwarding
 
-\- Authenticated message handling
+- Basic offline mailbox delivery
 
-\- Modular transport interface
+- Initial Rust core library
 
-\- Initial Tor/Arti transport integration
+- Initial Flutter SDK integration
 
-\- Basic relay forwarding
+- Reference application example
 
-\- Basic offline mailbox delivery
+- Technical documentation
 
-\- Initial Rust core library
+- Automated test suite
 
-\- Initial Flutter SDK integration
-
-\- Reference application example
-
-\- Technical documentation
-
-\- Automated test suite
-
-
-
-\### Explicitly Outside the Initial v0.1 Scope
-
-
+### Explicitly Outside the Initial v0.1 Scope
 
 The following features are not required for the first release:
 
+- Fully decentralized global relay discovery
 
+- Global user or device directory
 
-\- Fully decentralized global relay discovery
+- Blockchain or token infrastructure
 
-\- Global user or device directory
+- Built-in application account management
 
-\- Blockchain or token infrastructure
+- Built-in social graph or contact management
 
-\- Built-in application account management
+- Mandatory mixnet integration
 
-\- Built-in social graph or contact management
+- Complete protection against global traffic correlation
 
-\- Mandatory mixnet integration
+- Every possible language SDK
 
-\- Complete protection against global traffic correlation
+- Large-scale production relay infrastructure
 
-\- Every possible language SDK
-
-\- Large-scale production relay infrastructure
-
-\- Fully automated multi-provider deployment
-
-
+- Fully automated multi-provider deployment
 
 These features may be evaluated after the core implementation is functional.
 
-
-
-\## 12. Future Development
-
-
+## 12. Future Development
 
 Following v0.1, development may expand into additional capabilities.
 
+### 12.1 Advanced Metadata Protection
 
+- Improved traffic-analysis resistance
 
-\### 12.1 Advanced Metadata Protection
+- Message padding
 
+- Batching and delayed delivery
 
+- Advanced routing identifiers
 
-\- Improved traffic-analysis resistance
+- Mixnet integration
 
-\- Message padding
+- Stronger separation of routing metadata
 
-\- Batching and delayed delivery
+### 12.2 Post-Quantum Cryptography
 
-\- Advanced routing identifiers
+- Standardized post-quantum key establishment
 
-\- Mixnet integration
+- Hybrid key-agreement designs
 
-\- Stronger separation of routing metadata
+- Protocol migration planning
 
+- Compatibility and performance testing
 
+### 12.3 Additional SDKs
 
-\### 12.2 Post-Quantum Cryptography
+- Kotlin
 
+- Swift
 
+- JavaScript or TypeScript
 
-\- Standardized post-quantum key establishment
+- Python
 
-\- Hybrid key-agreement designs
+- Additional platform integrations
 
-\- Protocol migration planning
+### 12.4 Independent Infrastructure Ecosystem
 
-\- Compatibility and performance testing
+- Community-operated relays
 
+- Alternative mailbox implementations
 
+- Independent transport implementations
 
-\### 12.3 Additional SDKs
+- Deployment tooling
 
+- Relay discovery mechanisms
 
+- Federation and interoperability improvements
 
-\- Kotlin
+### 12.5 Protocol Verification
 
-\- Swift
+- Formal protocol analysis
 
-\- JavaScript or TypeScript
+- Independent security audits
 
-\- Python
+- Additional cryptographic review
 
-\- Additional platform integrations
+- Advanced fuzz testing
 
-
-
-\### 12.4 Independent Infrastructure Ecosystem
-
-
-
-\- Community-operated relays
-
-\- Alternative mailbox implementations
-
-\- Independent transport implementations
-
-\- Deployment tooling
-
-\- Relay discovery mechanisms
-
-\- Federation and interoperability improvements
-
-
-
-\### 12.5 Protocol Verification
-
-
-
-\- Formal protocol analysis
-
-\- Independent security audits
-
-\- Additional cryptographic review
-
-\- Advanced fuzz testing
-
-\- Cross-implementation compatibility testing
-
-
+- Cross-implementation compatibility testing
 
 These capabilities will be prioritized according to security value, developer demand, implementation maturity, and available contributors.
 
-
-
-\## 13. Testing and Quality Standards
-
-
+## 13. Testing and Quality Standards
 
 Every major PCP component must have a defined testing strategy.
-
-
 
 | Component | Required testing |
 
@@ -794,63 +576,41 @@ Every major PCP component must have a defined testing strategy.
 
 | Release pipeline | Build reproducibility and dependency checks |
 
-
-
 Security-sensitive changes must include relevant tests and documentation updates.
-
-
 
 Passing tests alone does not establish security. Independent review remains necessary.
 
-
-
-\## 14. Community Contributions
-
-
+## 14. Community Contributions
 
 PCP is intended to be developed as an open-source project.
 
-
-
 Community contributions may include:
 
+- Alternative transport implementations
 
+- Cryptographic implementation improvements
 
-\- Alternative transport implementations
+- SDK integrations
 
-\- Cryptographic implementation improvements
+- Relay and mailbox implementations
 
-\- SDK integrations
+- Performance optimizations
 
-\- Relay and mailbox implementations
+- Metadata protection techniques
 
-\- Performance optimizations
+- Documentation
 
-\- Metadata protection techniques
+- Testing infrastructure
 
-\- Documentation
-
-\- Testing infrastructure
-
-\- Security research
-
-
+- Security research
 
 Contributions must follow the published architecture, security requirements, coding standards, and review process.
 
-
-
 Security-sensitive changes require additional scrutiny before acceptance.
 
-
-
-\## 15. Release Strategy
-
-
+## 15. Release Strategy
 
 PCP will use a staged release approach.
-
-
 
 | Release stage | Purpose |
 
@@ -868,23 +628,13 @@ PCP will use a staged release approach.
 
 | v1.0 | Stable protocol and implementation release after security and interoperability maturity |
 
-
-
 A release number must reflect actual implementation maturity.
-
-
 
 Features listed in future roadmap phases must not be presented as completed capabilities.
 
-
-
-\## 16. Project Success Criteria
-
-
+## 16. Project Success Criteria
 
 PCP will be considered successful when independent developers can:
-
-
 
 1\. Understand the protocol through public documentation.
 
@@ -902,27 +652,15 @@ PCP will be considered successful when independent developers can:
 
 8\. Contribute alternative implementations and improvements.
 
-
-
 The long-term objective is to establish a reusable open-source communication foundation that applications can adopt without depending on a single service provider.
 
-
-
-\## 17. Conclusion
-
-
+## 17. Conclusion
 
 PCP development will begin with a focused, functional protocol foundation and expand through independently testable engineering milestones.
 
-
-
 The first priority is not to build every possible privacy technology.
-
-
 
 It is to establish a working, secure, modular communication foundation that developers can inspect, test, deploy, and improve.
 
-
-
-\*\*Build the foundation. Prove the security. Enable the ecosystem.\*\*
+**Build the foundation. Prove the security. Enable the ecosystem.**
 

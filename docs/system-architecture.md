@@ -1,120 +1,66 @@
-\# System Architecture
+# System Architecture
 
-\## Private Communication Protocol (PCP)
+## Private Communication Protocol (PCP)
 
+**Document:** 03 – System Architecture  
 
+**Project:** Private Communication Protocol (PCP)  
 
-\*\*Document:\*\* 03 – System Architecture  
+**Version:** 0.1-draft  
 
-\*\*Project:\*\* Private Communication Protocol (PCP)  
+**Status:** Initial Architecture Specification  
 
-\*\*Version:\*\* 0.1-draft  
+**Implementation Direction:** Rust-based modular core
 
-\*\*Status:\*\* Initial Architecture Specification  
+---
 
-\*\*Implementation Direction:\*\* Rust-based modular core
-
-
-
-\---
-
-
-
-\## 1. Introduction
-
-
+## 1. Introduction
 
 Private Communication Protocol (PCP) is designed as a modular communication security and transport framework that applications can integrate through SDKs and compatible protocol implementations.
 
-
-
 Its architecture separates cryptographic operations, identity management, message processing, metadata protection and network transport into independent components.
-
-
 
 This separation allows individual components to evolve without requiring applications to replace their entire communication infrastructure.
 
-
-
 PCP is intended to operate as an independent software implementation that developers and organizations can deploy within infrastructure they control.
-
-
 
 The initial implementation will prioritize a functional security and transport foundation rather than a complete decentralized communication ecosystem.
 
-
-
-\## 2. Architectural Principles
-
-
+## 2. Architectural Principles
 
 PCP follows the following architectural principles.
 
-
-
-\### 2.1 Modularity
-
-
+### 2.1 Modularity
 
 Each major protocol responsibility should have a defined component boundary and interface.
 
-
-
-\### 2.2 Separation of Responsibilities
-
-
+### 2.2 Separation of Responsibilities
 
 Application functionality, cryptographic operations, network transport and relay infrastructure must remain logically independent.
 
-
-
-\### 2.3 Cryptographic Transparency
-
-
+### 2.3 Cryptographic Transparency
 
 Cryptographic algorithms, protocols and implementation decisions must be publicly documented and independently inspectable.
 
-
-
-\### 2.4 Transport Independence
-
-
+### 2.4 Transport Independence
 
 The protocol core must not depend permanently on a single network transport implementation.
 
-
-
-\### 2.5 Independent Deployment
-
-
+### 2.5 Independent Deployment
 
 Developers must be able to deploy compatible PCP components without depending on infrastructure operated by the PCP project.
 
-
-
-\### 2.6 Minimal Trust
-
-
+### 2.6 Minimal Trust
 
 No unnecessary component should receive access to plaintext messages, private keys or unrelated user information.
 
-
-
-\### 2.7 Extensibility
-
-
+### 2.7 Extensibility
 
 Additional cryptographic implementations, transport mechanisms and language bindings should be introduced through documented interfaces.
 
-
-
-\## 3. High-Level Architecture
-
-
+## 3. High-Level Architecture
 
 PCP is organized into six major architectural areas:
-
-
 
 1\. Application Integration Layer
 
@@ -128,15 +74,9 @@ PCP is organized into six major architectural areas:
 
 6\. Relay and Delivery Infrastructure
 
-
-
 These areas work together to process, secure and transport communication data.
 
-
-
-\### 3.1 Architecture Diagram
-
-
+### 3.1 Architecture Diagram
 
 ```mermaid
 
@@ -144,15 +84,9 @@ flowchart TB
 
 &#x20;   APP\["Application Layer<br/>UI, Accounts, Contacts, Business Logic"]
 
-
-
 &#x20;   SDK\["PCP SDK<br/>Application Integration"]
 
-
-
 &#x20;   CORE\["PCP Core Engine"]
-
-
 
 &#x20;   ID\["Identity and Session Management"]
 
@@ -162,29 +96,19 @@ flowchart TB
 
 &#x20;   META\["Metadata Protection"]
 
-
-
 &#x20;   TRANSPORT\["Transport Abstraction"]
-
-
 
 &#x20;   TOR\["Tor / Arti Transport"]
 
 &#x20;   FUTURE\["Future Transport Extensions"]
 
-
-
 &#x20;   RELAY\["Relay Infrastructure"]
 
 &#x20;   MAILBOX\["Temporary Encrypted Mailbox"]
 
-
-
 &#x20;   APP <--> SDK
 
 &#x20;   SDK <--> CORE
-
-
 
 &#x20;   CORE <--> ID
 
@@ -194,17 +118,11 @@ flowchart TB
 
 &#x20;   ENV <--> META
 
-
-
 &#x20;   META <--> TRANSPORT
-
-
 
 &#x20;   TRANSPORT <--> TOR
 
 &#x20;   TRANSPORT <--> FUTURE
-
-
 
 &#x20;   TOR <--> RELAY
 
@@ -212,57 +130,37 @@ flowchart TB
 
 ```
 
-
-
 The diagram represents logical component relationships, not a requirement that every component run as a separate process.
-
-
 
 The initial implementation may combine several components within one client library.
 
-
-
-\## 4. Application Integration Layer
-
-
+## 4. Application Integration Layer
 
 The application integration layer connects PCP with applications that require secure communication.
 
-
-
 Applications interact with PCP through its SDK or compatible interfaces.
-
-
 
 Responsibilities include:
 
+- Passing messages to PCP.
 
+- Providing recipient identity information.
 
-\- Passing messages to PCP.
+- Receiving authenticated decrypted messages.
 
-\- Providing recipient identity information.
+- Handling application-specific control events.
 
-\- Receiving authenticated decrypted messages.
+- Managing application-level user accounts.
 
-\- Handling application-specific control events.
+- Managing contacts and groups.
 
-\- Managing application-level user accounts.
+- Maintaining application databases.
 
-\- Managing contacts and groups.
-
-\- Maintaining application databases.
-
-\- Implementing user interfaces.
-
-
+- Implementing user interfaces.
 
 PCP does not require applications to adopt a particular account-management or database architecture.
 
-
-
-\### Integration Model
-
-
+### Integration Model
 
 ```text
 
@@ -282,369 +180,221 @@ PCP Core Engine
 
 ```
 
-
-
 The SDK provides an application-facing interface while the core engine handles the underlying protocol operations.
-
-
 
 The application must not receive unnecessary access to cryptographic private keys or internal session secrets.
 
-
-
-\## 5. PCP Core Engine
-
-
+## 5. PCP Core Engine
 
 The PCP Core Engine coordinates the protocol's internal components.
 
-
-
 It is responsible for:
 
+- Managing message-processing operations.
 
+- Coordinating cryptographic sessions.
 
-\- Managing message-processing operations.
+- Constructing secure message envelopes.
 
-\- Coordinating cryptographic sessions.
+- Applying metadata-protection policies.
 
-\- Constructing secure message envelopes.
+- Selecting compatible transport implementations.
 
-\- Applying metadata-protection policies.
+- Processing inbound communication packets.
 
-\- Selecting compatible transport implementations.
-
-\- Processing inbound communication packets.
-
-\- Returning authenticated content to the application.
-
-
+- Returning authenticated content to the application.
 
 The core engine should expose documented interfaces rather than requiring applications to interact directly with internal cryptographic implementations.
 
-
-
-\## 6. Identity and Session Management
-
-
+## 6. Identity and Session Management
 
 The identity subsystem manages cryptographic identities and communication sessions.
 
-
-
 Its responsibilities include:
 
+- Device identity generation.
 
+- Identity verification.
 
-\- Device identity generation.
+- Public-key distribution interfaces.
 
-\- Identity verification.
+- Session establishment.
 
-\- Public-key distribution interfaces.
+- Session persistence.
 
-\- Session establishment.
+- Key rotation.
 
-\- Session persistence.
+- Device revocation.
 
-\- Key rotation.
-
-\- Device revocation.
-
-\- Cryptographic session recovery where supported.
-
-
+- Cryptographic session recovery where supported.
 
 The initial implementation will build upon established cryptographic protocols rather than introducing custom key-agreement mechanisms.
 
-
-
 Signal Protocol integration is the initial direction for end-to-end encrypted messaging.
-
-
 
 Identity management must distinguish between:
 
+- Application account identity.
 
+- Cryptographic device identity.
 
-\- Application account identity.
-
-\- Cryptographic device identity.
-
-\- Communication session identity.
-
-
+- Communication session identity.
 
 These identities serve different purposes and must not be treated as interchangeable.
 
-
-
 Private identity keys and session secrets must remain protected within the appropriate local security boundary.
 
-
-
-\## 7. Cryptographic Security Layer
-
-
+## 7. Cryptographic Security Layer
 
 The cryptographic layer provides the mechanisms used to protect communication content and authenticate protocol operations.
 
-
-
 Its responsibilities include:
 
-
-
-\### 7.1 End-to-End Encryption
-
-
+### 7.1 End-to-End Encryption
 
 Encrypt communication content between intended devices.
 
-
-
-\### 7.2 Message Authentication
-
-
+### 7.2 Message Authentication
 
 Verify that received messages have not been modified and originate from an authenticated cryptographic session.
 
-
-
-\### 7.3 Key Management
-
-
+### 7.3 Key Management
 
 Manage cryptographic keys and session state according to the selected protocol.
 
-
-
-\### 7.4 Replay Protection
-
-
+### 7.4 Replay Protection
 
 Prevent previously valid communication packets from being accepted as new messages outside the protocol's permitted replay behavior.
 
-
-
-\### 7.5 Cryptographic Verification
-
-
+### 7.5 Cryptographic Verification
 
 Validate signatures, identity credentials and other required cryptographic proofs.
 
-
-
-\### Initial Implementation Direction
-
-
+### Initial Implementation Direction
 
 PCP will investigate integration with the official Signal Protocol implementation.
 
-
-
 Additional cryptographic algorithms may be introduced through reviewed and documented extensions.
-
-
 
 The protocol must not introduce custom cryptographic primitives merely to satisfy architectural preferences.
 
-
-
-\## 8. Message Envelope Layer
-
-
+## 8. Message Envelope Layer
 
 The message envelope layer defines how encrypted content is packaged for transmission.
 
-
-
 It separates communication payloads from transport-related information.
-
-
 
 A logical envelope may contain:
 
+- Protocol version.
 
+- Encrypted payload.
 
-\- Protocol version.
+- Opaque routing information.
 
-\- Encrypted payload.
+- Expiration information.
 
-\- Opaque routing information.
+- Required authentication information.
 
-\- Expiration information.
-
-\- Required authentication information.
-
-\- Anti-replay information.
-
-
+- Anti-replay information.
 
 The final binary wire format will be defined in a separate protocol specification.
 
+### Design Requirements
 
+- Clearly defined message structure.
 
-\### Design Requirements
+- Version compatibility.
 
+- Authenticated message processing.
 
+- Strict input validation.
 
-\- Clearly defined message structure.
+- Bounded message sizes.
 
-\- Version compatibility.
+- Explicit expiration behavior.
 
-\- Authenticated message processing.
-
-\- Strict input validation.
-
-\- Bounded message sizes.
-
-\- Explicit expiration behavior.
-
-\- No unnecessary plaintext metadata.
-
-
+- No unnecessary plaintext metadata.
 
 Routing information that must be visible to a relay should be minimized and protected where the transport architecture permits.
 
-
-
-\## 9. Metadata Protection Layer
-
-
+## 9. Metadata Protection Layer
 
 The metadata protection layer aims to reduce information exposed during communication.
 
-
-
 It operates independently of message-content encryption.
-
-
 
 Potential mechanisms include:
 
-
-
-\### 9.1 Opaque Identifiers
-
-
+### 9.1 Opaque Identifiers
 
 Use identifiers that do not directly reveal application usernames or real-world identities.
 
-
-
-\### 9.2 Encrypted Routing Information
-
-
+### 9.2 Encrypted Routing Information
 
 Protect routing information from network participants that do not require access to it.
 
-
-
-\### 9.3 Packet Padding
-
-
+### 9.3 Packet Padding
 
 Reduce the ability to infer message characteristics from packet sizes.
 
-
-
-\### 9.4 Metadata Minimization
-
-
+### 9.4 Metadata Minimization
 
 Avoid transmitting information that is unnecessary for communication delivery.
 
-
-
-\### 9.5 Traffic Protection Extensions
-
-
+### 9.5 Traffic Protection Extensions
 
 Investigate batching, timing randomization and other traffic-analysis resistance mechanisms.
 
-
-
 The initial implementation will prioritize practical metadata minimization and transport integration.
-
-
 
 Advanced traffic-analysis resistance may be developed as a future extension.
 
-
-
 Every mechanism must document which observers it protects against and what information remains visible.
 
-
-
-\## 10. Transport Layer
-
-
+## 10. Transport Layer
 
 The transport layer provides network connectivity independently of the cryptographic core.
 
-
-
 It receives prepared communication packets and forwards them through the configured transport implementation.
-
-
 
 The transport interface should support:
 
+- Connection establishment.
 
+- Packet transmission.
 
-\- Connection establishment.
+- Packet reception.
 
-\- Packet transmission.
+- Connection management.
 
-\- Packet reception.
+- Failure handling.
 
-\- Connection management.
+- Reconnection.
 
-\- Failure handling.
+- Transport configuration.
 
-\- Reconnection.
+- Transport capability reporting.
 
-\- Transport configuration.
-
-\- Transport capability reporting.
-
-
-
-\### 10.1 Initial Transport: Tor
-
-
+### 10.1 Initial Transport: Tor
 
 The initial transport implementation will investigate Tor and Arti integration.
 
-
-
 Tor provides onion routing through multiple relays, separating knowledge of the originating network endpoint and final destination across different parts of the circuit.
-
-
 
 PCP will integrate with the Tor transport rather than inventing a replacement onion-routing cryptographic protocol.
 
-
-
-\### 10.2 Transport Abstraction
-
-
+### 10.2 Transport Abstraction
 
 The core engine must communicate through a transport interface.
 
-
-
 Conceptual interface:
-
-
 
 ```rust
 
 trait Transport {
 
 &#x20;   async fn connect(\&self) -> Result<(), TransportError>;
-
-
 
 &#x20;   async fn send(
 
@@ -654,15 +404,11 @@ trait Transport {
 
 &#x20;   ) -> Result<(), TransportError>;
 
-
-
 &#x20;   async fn receive(
 
 &#x20;       \&self,
 
 &#x20;   ) -> Result<Vec<u8>, TransportError>;
-
-
 
 &#x20;   async fn close(\&self) -> Result<(), TransportError>;
 
@@ -670,121 +416,77 @@ trait Transport {
 
 ```
 
-
-
 This is an illustrative interface. The final implementation must account for concurrency, cancellation, packet limits and connection lifecycle management.
 
-
-
-\### 10.3 Future Transport Extensions
-
-
+### 10.3 Future Transport Extensions
 
 Future contributors may investigate:
 
+- Alternative onion-routing systems.
 
+- Mix networks.
 
-\- Alternative onion-routing systems.
+- Specialized low-latency transports.
 
-\- Mix networks.
-
-\- Specialized low-latency transports.
-
-\- Additional privacy-preserving relay mechanisms.
-
-
+- Additional privacy-preserving relay mechanisms.
 
 Transport extensions must not silently bypass required cryptographic protections.
 
-
-
-\## 11. Relay and Delivery Infrastructure
-
-
+## 11. Relay and Delivery Infrastructure
 
 The relay infrastructure handles packet forwarding and temporary message delivery.
 
-
-
 It may be deployed independently from the application and PCP client.
-
-
 
 Initial relay responsibilities include:
 
+- Accepting communication packets.
 
+- Validating packet structure.
 
-\- Accepting communication packets.
+- Forwarding packets.
 
-\- Validating packet structure.
+- Handling temporary encrypted message storage.
 
-\- Forwarding packets.
+- Enforcing expiration policies.
 
-\- Handling temporary encrypted message storage.
+- Managing delivery acknowledgements.
 
-\- Enforcing expiration policies.
+- Applying abuse and resource limits.
 
-\- Managing delivery acknowledgements.
-
-\- Applying abuse and resource limits.
-
-
-
-\### 11.1 Temporary Mailbox
-
-
+### 11.1 Temporary Mailbox
 
 A mailbox component may temporarily store encrypted packets for unavailable recipients.
 
-
-
 It must not possess the recipient's end-to-end decryption keys.
-
-
 
 The mailbox design must define:
 
+- Message retention.
 
+- Expiration.
 
-\- Message retention.
+- Duplicate handling.
 
-\- Expiration.
+- Delivery acknowledgement.
 
-\- Duplicate handling.
+- Retry behavior.
 
-\- Delivery acknowledgement.
+- Storage limits.
 
-\- Retry behavior.
+- Deletion behavior.
 
-\- Storage limits.
-
-\- Deletion behavior.
-
-
-
-\### 11.2 Independent Deployment
-
-
+### 11.2 Independent Deployment
 
 Relay components must be deployable within infrastructure controlled by application developers or independent operators.
 
-
-
 The initial release does not require a PCP-operated centralized relay service.
 
-
-
-\## 12. Data Flow Between Components
-
-
+## 12. Data Flow Between Components
 
 The following sequence describes the intended outbound and inbound processing flow.
 
-
-
-\### 12.1 Outbound Flow
-
-
+### 12.1 Outbound Flow
 
 ```mermaid
 
@@ -804,8 +506,6 @@ sequenceDiagram
 
 &#x20;   participant RELAY as Relay Network
 
-
-
 &#x20;   APP->>SDK: Submit message
 
 &#x20;   SDK->>CORE: Process communication
@@ -824,11 +524,7 @@ sequenceDiagram
 
 ```
 
-
-
-\### 12.2 Inbound Flow
-
-
+### 12.2 Inbound Flow
 
 ```mermaid
 
@@ -846,8 +542,6 @@ sequenceDiagram
 
 &#x20;   participant APP as Application
 
-
-
 &#x20;   RELAY->>TRANS: Deliver encrypted packet
 
 &#x20;   TRANS->>CORE: Receive packet
@@ -864,27 +558,15 @@ sequenceDiagram
 
 ```
 
-
-
 These diagrams describe the logical flow. Exact packet formats, handshake behavior and relay interactions will be defined in subsequent specifications.
 
-
-
-\## 13. Deployment Architecture
-
-
+## 13. Deployment Architecture
 
 PCP is designed for independent deployment.
 
-
-
 Applications may integrate PCP locally and operate compatible infrastructure within their own environments.
 
-
-
 A typical deployment may contain:
-
-
 
 ```text
 
@@ -926,27 +608,15 @@ Application Infrastructure
 
 ```
 
-
-
 Not every deployment requires every infrastructure component.
-
-
 
 The application operator determines which compatible components to deploy according to its requirements.
 
-
-
 PCP does not operate or control application databases, user accounts or business logic.
 
-
-
-\## 14. Implementation Technology
-
-
+## 14. Implementation Technology
 
 The initial implementation direction is based on the following technologies.
-
-
 
 | Component | Initial technology |
 
@@ -968,23 +638,13 @@ The initial implementation direction is based on the following technologies.
 
 | Version control | Git |
 
-
-
 These are initial technology selections and may evolve through documented architectural decisions.
-
-
 
 Dependencies must undergo compatibility, maintenance and security review before being included in stable releases.
 
-
-
-\## 15. Repository and Module Organization
-
-
+## 15. Repository and Module Organization
 
 The proposed PCP Core repository structure is:
-
-
 
 ```text
 
@@ -1054,95 +714,61 @@ pcp-core/
 
 ```
 
-
-
 This is a proposed organizational structure, not a requirement that all components be implemented in the first release.
 
-
-
-\## 16. Extension and Contribution Architecture
-
-
+## 16. Extension and Contribution Architecture
 
 PCP is intended to support community-developed extensions.
 
-
-
 Developers may contribute:
 
+- Alternative transport implementations.
 
+- Metadata-protection mechanisms.
 
-\- Alternative transport implementations.
+- Cryptographic integration improvements.
 
-\- Metadata-protection mechanisms.
+- Relay implementations.
 
-\- Cryptographic integration improvements.
+- Performance optimizations.
 
-\- Relay implementations.
+- Additional language bindings.
 
-\- Performance optimizations.
-
-\- Additional language bindings.
-
-\- Testing and security tooling.
-
-
+- Testing and security tooling.
 
 Extensions must interact with documented interfaces.
 
-
-
 Security-critical changes require additional review and testing before inclusion in stable releases.
-
-
 
 Experimental implementations must remain clearly distinguished from stable components.
 
-
-
-\## 17. Security Boundaries and Limitations
-
-
+## 17. Security Boundaries and Limitations
 
 PCP separates application, client, transport and infrastructure responsibilities.
 
-
-
 However, the architecture cannot eliminate every possible attack.
-
-
 
 Important limitations include:
 
+- Compromised application environments may expose plaintext.
 
+- Compromised client devices may expose cryptographic secrets.
 
-\- Compromised application environments may expose plaintext.
+- Network observers may still analyze communication timing and traffic volume.
 
-\- Compromised client devices may expose cryptographic secrets.
+- Relay operators may observe information required for packet forwarding.
 
-\- Network observers may still analyze communication timing and traffic volume.
+- Incorrect application integration may weaken intended protections.
 
-\- Relay operators may observe information required for packet forwarding.
+- Transport availability depends on the underlying network and infrastructure.
 
-\- Incorrect application integration may weaken intended protections.
-
-\- Transport availability depends on the underlying network and infrastructure.
-
-\- Open-source implementations still require independent security review.
-
-
+- Open-source implementations still require independent security review.
 
 PCP must document its guarantees based on tested implementations rather than architectural assumptions.
 
-
-
-\## 18. Initial Development Priorities
-
-
+## 18. Initial Development Priorities
 
 The first development phase will focus on the following components:
-
-
 
 1\. Rust workspace and module boundaries.
 
@@ -1164,35 +790,19 @@ The first development phase will focus on the following components:
 
 10\. Security and interoperability tests.
 
-
-
 Advanced mixnet integration, complex decentralized governance and additional transport mechanisms are outside the initial implementation scope.
 
-
-
-\## Conclusion
-
-
+## Conclusion
 
 PCP is designed as modular, independently deployable communication infrastructure.
 
-
-
 Its architecture separates application functionality from cryptographic security, metadata protection and network transport.
-
-
 
 This separation allows developers to integrate reusable security components while retaining control over their own applications and infrastructure.
 
-
-
 The architecture is intended to evolve through documented specifications, independent implementation efforts, security research and community contributions.
 
+**Private Communication Protocol (PCP)**
 
-
-\*\*Private Communication Protocol (PCP)\*\*
-
-
-
-\*Open by design. Secure by mathematics.\*
+*Open by design. Secure by mathematics.*
 
